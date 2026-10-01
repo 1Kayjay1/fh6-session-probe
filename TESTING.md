@@ -52,4 +52,4 @@ For the current research question, the most useful test is:
 6. Stop and create the share bundle.
 7. Compare the two bundles.
 
-The key question is whether both clients expose a stable shared session/network fingerprint.
+The key question is whether both clients expose a stable shared session/network fingerprint.\n\nFor the exact step-by-step protocol and interpretation guidance, see [TWO_PLAYER_TEST.md](./TWO_PLAYER_TEST.md). The short operator version is [TESTER_CHECKLIST.txt](./TESTER_CHECKLIST.txt).
