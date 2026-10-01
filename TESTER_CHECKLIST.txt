@@ -5,6 +5,9 @@ BEFORE:
 [ ] Both players are in the SAME normal freeroam session
 [ ] Both players can visibly see each other's cars
 [ ] FH6 is already running on both PCs
+[ ] No VPN/Tailscale/ZeroTier-style tunnel during the baseline
+[ ] No Discord/Xbox/Steam/shared voice call during capture
+[ ] If a convoy was used to join, leave convoy, confirm both cars remain visible, then wait ~20 sec
 
 ON BOTH PCS:
 [ ] Run "RUN FH6 SESSION TESTER.cmd"
@@ -32,6 +35,8 @@ DO NOT DURING THE FIRST TEST:
 [ ] Do not enter a race
 [ ] Do not switch to solo/offline
 [ ] Do not change sessions
+[ ] Do not start a shared voice call
+[ ] Avoid large downloads/streams
 
 GOAL:
 Compare two independent captures from the same unchanged FH6 freeroam session.
