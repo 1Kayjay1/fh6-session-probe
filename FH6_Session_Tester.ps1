@@ -83,7 +83,49 @@ function Find-ForzaExecutableInFolder([string]$folder) {
 
     try {
         $match = Get-ChildItem -LiteralPath $folder -File -Filter "*.exe" -Recurse -ErrorAction SilentlyContinue |
-            Where-Object { $_.Name -match '(?i)^forzahorizon6\.exe$|forza.*horizon.*6.*\.exe
+            Where-Object {
+                $n = $_.Name.ToLowerInvariant()
+                ($n -eq "forzahorizon6.exe") -or (($n -like "*forza*") -and ($n -like "*horizon*") -and ($n -like "*6*.exe"))
+            } |
+            Select-Object -First 1
+        if ($match) { return $match.FullName }
+    } catch {}
+
+    return $null
+}
+
+function Set-ForzaFolderSelection([string]$folder) {
+    $exe = Find-ForzaExecutableInFolder $folder
+    if (-not $exe) {
+        [Windows.Forms.MessageBox]::Show(
+            "FH6's executable was not found in that folder.`r`n`r`nTry selecting the actual FH6 install folder. If Windows protects the install directory, launch FH6 and use Detect Running instead.",
+            "FH6 Proximity VC Session Tester","OK","Information"
+        ) | Out-Null
+        return $false
+    }
+
+    $script:ForzaExe = $exe
+    $script:ForzaProcessName = [IO.Path]::GetFileNameWithoutExtension($exe)
+    $pathBox.Text = $script:ForzaExe
+
+    $p = Find-Forza
+    if ($p) {
+        $script:ForzaPid = $p.Id
+        $script:ForzaProcessName = $p.ProcessName
+        $gameStatus.Text = "● Folder selected + game running   PID $($p.Id)"
+        $gameStatus.ForeColor = Color "#188038"
+        $startBtn.Enabled = $true
+    } else {
+        $script:ForzaPid = $null
+        $gameStatus.Text = "● FH6 folder selected. Launch the game, then Detect Running."
+        $gameStatus.ForeColor = Color "#D97706"
+        $startBtn.Enabled = $false
+    }
+
+    return $true
+}
+
+function Detect-Forza {
     $p = Find-Forza
     if (-not $p) {
         [Windows.Forms.MessageBox]::Show(
