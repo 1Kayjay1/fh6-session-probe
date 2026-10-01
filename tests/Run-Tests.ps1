@@ -53,6 +53,7 @@ Assert-True "Manual folder fallback present" ($source -match 'Find-ForzaExecutab
 Assert-True "Live-process recheck present" ($source -match 'Always re-check the live process immediately before capture') "Capture should reject stale/missing FH6 processes."
 Assert-True "Radio-mod exclusion preserved" ($source -match 'fh6-radio') "Known radio mod exclusion missing."
 Assert-True "No PID automatic-variable parameter collision" (-not ($source -match 'function\s+Get-ProcessNameSafe\s*\(\s*\[int\]\s*\$pid\s*\)')) "PowerShell's automatic $PID variable is read-only; use a different parameter name."
+Assert-True "No assignment to automatic args variable" (-not ($source -match '(?m)^\s*\$args\s*=')) "Avoid assigning to PowerShell automatic $args; use a normal local variable name."
 
 $forbidden = @(
     "ReadProcessMemory",
