@@ -4,28 +4,57 @@ This project is intentionally transparent.
 
 ## Inspect before running
 
-There is no compiled application in this repository. The tester consists of:
+There is no compiled application in this repository. The tester consists of readable PowerShell plus small CMD launchers.
 
-- a PowerShell script
-- a small CMD launcher
-
-Both can be opened in any text editor before execution.
+You can inspect the source before executing it.
 
 ## Game integrity
 
-The current probe is external to Forza Horizon 6. It does not inject code, patch the game, read process memory, or alter gameplay.
+The current probe is external to Forza Horizon 6.
+
+It does not:
+
+- inject code
+- patch the game
+- read or write FH6 process memory
+- automate gameplay
+- modify cars, credits, position, or game state
 
 ## Network capture
 
-The probe uses Windows Packet Monitor for network **metadata**. Raw packet-byte/payload capture is intentionally not enabled.
+The probe uses Windows Packet Monitor for network **metadata**.
+
+Raw packet-byte / packet-payload capture is intentionally not enabled.
+
+The repository tests check that the expected metadata-only Packet Monitor flags remain present.
+
+## Local FH6 text/config scan
+
+The probe may search recently modified FH6-related `.log`, `.txt`, `.json`, `.xml`, `.ini`, and `.cfg` files for session-related keywords.
+
+The scan is limited to likely FH6 locations, recent files, a small set of text-like extensions, and bounded file sizes/results.
+
+A known custom FH6 radio-mod path is explicitly ignored so it does not pollute the research output.
 
 ## Data handling
 
 Nothing is uploaded automatically.
 
-A user must manually choose to share the generated diagnostic bundle.
+The user must manually choose to share the generated diagnostic ZIP.
 
-Do not publish other people's diagnostic bundles without their permission.
+The raw Packet Monitor ETL stays local and is excluded from the share ZIP.
+
+Diagnostic bundles can contain process names, local/remote network addresses, ports, and FH6-related text/config excerpts. Testers should review a bundle before sharing it if they have privacy concerns.
+
+Do not publish another person's diagnostic bundle without their permission.
+
+## Automated checks
+
+The repository includes Windows-based syntax, safety-invariant, and ZIP smoke tests in `tests/Run-Tests.ps1`.
+
+GitHub Actions runs those checks on pushes and pull requests.
+
+Passing tests reduce accidental breakage, but they cannot guarantee compatibility with every PC or future FH6 update.
 
 ## Reporting
 
