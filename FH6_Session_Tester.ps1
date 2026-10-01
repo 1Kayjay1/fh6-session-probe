@@ -176,8 +176,13 @@ function Snapshot-Processes([string]$state) {
             WorkingSetMB = [math]::Round($p.WorkingSet64 / 1MB, 1)
         }
     }
+    # Only write FH6/Xbox/Gaming-related rows to the shareable diagnostics.
+    # This avoids exposing an unrelated full process list.
+    $rows = @($rows | Where-Object {
+        $_.Process -match '(?i)forza|horizon|xbox|gaming|gamebar|playfab|party|microsoftstore|store'
+    })
     $rows | Export-Csv -LiteralPath $script:ProcessCsv -NoTypeInformation -Append
-    Log "PROCESS SNAPSHOT [$state] count=$($rows.Count)"
+    Log "PROCESS SNAPSHOT [$state] relevant_count=$($rows.Count)"
 }
 
 function Snapshot-Sockets([string]$state) {
@@ -218,13 +223,16 @@ function Snapshot-Sockets([string]$state) {
         }
     } catch {}
 
+    # Only write FH6/Xbox/Gaming-related socket rows to the shareable CSV.
+    # Pktmon remains the broad flow-metadata source used for the research question.
+    $rows = @($rows | Where-Object {
+        $_.Process -match '(?i)forza|horizon|xbox|gaming|gamebar|playfab|party|microsoftstore|store'
+    })
     $rows | Export-Csv -LiteralPath $script:SocketCsv -NoTypeInformation -Append
 
-    $interesting = @($rows | Where-Object {
-        $_.Process -match '(?i)forza|xbox|gaming|gamebar|playfab|party|microsoft|store'
-    })
+    $interesting = $rows
 
-    Log "SOCKET SNAPSHOT [$state] total=$($rows.Count) interesting=$($interesting.Count)"
+    Log "SOCKET SNAPSHOT [$state] relevant_count=$($interesting.Count)"
     foreach ($r in $interesting | Sort-Object Process,Proto,LocalPort) {
         if ($r.Proto -eq "TCP") {
             Log ("  {0} pid={1} TCP {2}:{3} -> {4}:{5} [{6}]" -f `
