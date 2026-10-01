@@ -95,7 +95,7 @@ Run:
 - **`PRE-FLIGHT CHECK.cmd`** — checks the local Windows environment, Packet Monitor, required PowerShell commands, FH6 process state, and capture-folder write access.
 - **`RUN SELF TESTS.cmd`** — parses the PowerShell files, checks capture-safety invariants, verifies the manual-folder fallback, and smoke-tests ZIP creation.
 
-See **[TESTING.md](./TESTING.md)** for details.
+See **[TESTING.md](./TESTING.md)** for details. For the actual two-PC experiment, use **[TWO_PLAYER_TEST.md](./TWO_PLAYER_TEST.md)** and the short **[TESTER_CHECKLIST.txt](./TESTER_CHECKLIST.txt)**.
 
 ## Automatic tests
 
@@ -113,6 +113,9 @@ It does **not** prove that a shared FH6 session fingerprint exists. That require
 - `RUN SELF TESTS.cmd` — one-click repository test suite
 - `README.html` — visual setup/trust guide
 - `TESTING.md` — testing methodology
+- `TWO_PLAYER_TEST.md` — exact two-PC same-session test protocol
+- `TESTER_CHECKLIST.txt` — short checklist to keep both testers in sync
+- `KNOWN_LIMITATIONS.md` — what a matching or non-matching result would actually mean
 - `SECURITY.md` — trust, privacy, and reporting notes
 
 ## Requirements
@@ -125,3 +128,5 @@ It does **not** prove that a shared FH6 session fingerprint exists. That require
 ## Status
 
 Experimental research tool. Expect the session-detection logic to evolve as more same-session captures are compared.
+
+A matching endpoint is a **candidate signal**, not automatic proof of a session ID. See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md) before interpreting results.
