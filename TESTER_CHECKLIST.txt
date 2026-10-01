@@ -1,0 +1,37 @@
+FH6 SESSION PROBE - QUICK TWO-PC CHECKLIST
+
+BEFORE:
+[ ] Both players are on PC
+[ ] Both players are in the SAME normal freeroam session
+[ ] Both players can visibly see each other's cars
+[ ] FH6 is already running on both PCs
+
+ON BOTH PCS:
+[ ] Run "RUN FH6 SESSION TESTER.cmd"
+[ ] Approve Administrator prompt
+[ ] Click "Detect Running"
+[ ] Confirm FH6 is detected
+[ ] Click "Start capture"
+[ ] Stay in the same freeroam session for 45-60 seconds
+[ ] Select ONLINE_FREEROAM_A
+[ ] Click "Mark state"
+[ ] Wait another 5-10 seconds
+[ ] Click "Stop + build bundle"
+
+SEND:
+[ ] Send ONLY Capture_..._SHARE.zip
+[ ] Do not send the local .etl unless specifically requested later
+
+IF DETECT RUNNING FAILS:
+[ ] Click "Choose Folder"
+[ ] Select the FH6 install folder
+[ ] Make sure FH6 is actually running before capture
+
+DO NOT DURING THE FIRST TEST:
+[ ] Do not join/leave convoy mid-capture
+[ ] Do not enter a race
+[ ] Do not switch to solo/offline
+[ ] Do not change sessions
+
+GOAL:
+Compare two independent captures from the same unchanged FH6 freeroam session.
