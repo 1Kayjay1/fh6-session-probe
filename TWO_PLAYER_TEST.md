@@ -28,18 +28,19 @@ Both testers should:
 
 Do these steps on **both PCs**:
 
-1. If you downloaded the repository as a ZIP, extract all files first. Do not launch the CMD from inside the compressed ZIP.\n2. Double-click `RUN FH6 SESSION TESTER.cmd`.
-2. Approve the Windows Administrator prompt. This is needed for Windows Packet Monitor metadata collection.
-3. Click **Detect Running**.
-4. Confirm the UI says FH6 is detected/running.
-5. If automatic detection fails, use **Choose Folder**, select the FH6 install folder, then make sure FH6 is running.
-6. Click **Start capture**.
-7. Stay together in the same freeroam session for **45–60 seconds**.
-8. Select `ONLINE_FREEROAM_A`.
-9. Click **Mark state** once.
-10. Wait another 5–10 seconds.
-11. Click **Stop + build bundle**.
-12. Keep the generated `Capture_..._SHARE.zip`.
+1. If you downloaded the repository as a ZIP, extract all files first. Do not launch the CMD from inside the compressed ZIP.
+2. Double-click `RUN FH6 SESSION TESTER.cmd`.
+3. Approve the Windows Administrator prompt. This is needed for Windows Packet Monitor metadata collection.
+4. Click **Detect Running**.
+5. Confirm the UI says FH6 is detected/running.
+6. If automatic detection fails, use **Choose Folder**, select the FH6 install folder, then make sure FH6 is running.
+7. Click **Start capture**.
+8. Stay together in the same freeroam session for **45–60 seconds**.
+9. Select `ONLINE_FREEROAM_A`.
+10. Click **Mark state** once.
+11. Wait another 5–10 seconds.
+12. Click **Stop + build bundle**.
+13. Keep the generated `Capture_..._SHARE.zip`.
 
 The two captures do not need to start on the exact same millisecond. They only need to overlap while both players remain in the same unchanged freeroam session.
 
