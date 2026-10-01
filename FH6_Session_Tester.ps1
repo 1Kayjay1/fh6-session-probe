@@ -421,15 +421,15 @@ function Start-Capture {
     $captureStatus.Text = "● Capturing"
     $captureStatus.ForeColor = Color "#188038"
 
-    Log "CAPTURE START v2.2"
+    Log "CAPTURE START v2.3"
     Log "ForzaProcess=$script:ForzaProcessName pid=$script:ForzaPid"
     Log "MODE=external/read-only; no memory read; no injection; no game file changes"
     Log "PACKET_CAPTURE=metadata only; raw payload flag 0x010 disabled"
 
+    Start-Pktmon
     Snapshot-Sockets "CAPTURE_START"
     Snapshot-Processes "CAPTURE_START"
     Scan-ForzaText "CAPTURE_START"
-    Start-Pktmon
 }
 
 function Stop-Capture {
@@ -447,23 +447,40 @@ function Stop-Capture {
     $captureStatus.Text = "● Processing bundle..."
     $captureStatus.ForeColor = Color "#D97706"
 
+    $manifest = [PSCustomObject]@{
+        ProbeVersion = "2.3"
+        StartedAt = $script:StartedAt.ToString("o")
+        StoppedAt = (Get-Date).ToString("o")
+        ForzaProcess = $script:ForzaProcessName
+        ForzaPid = $script:ForzaPid
+        PowerShellVersion = $PSVersionTable.PSVersion.ToString()
+        WindowsVersion = [Environment]::OSVersion.VersionString
+        PacketMetadataTextPresent = (Test-Path -LiteralPath $script:PktTxt)
+        RawPacketBytesCaptured = $false
+        AutomaticUpload = $false
+    }
+    $manifest | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath (Join-Path $script:RunDir "capture_manifest.json") -Encoding UTF8
+
     $notes = @"
 FH6 Proximity VC Session Tester capture bundle
 
 Files:
-- probe.log: timeline + interesting socket summaries
-- socket_snapshots.csv: all TCP/UDP ownership snapshots at each state mark
-- process_snapshots.csv: process table at each state mark
-- forza_text_hits.txt: keyword matches from recently modified Forza text/config/log files
+- capture_manifest.json: probe/runtime details without install paths
+- probe.log: timeline + FH6/Xbox/Gaming-related socket summaries
+- socket_snapshots.csv: FH6/Xbox/Gaming-related socket ownership snapshots at each state mark
+- process_snapshots.csv: FH6/Xbox/Gaming-related process snapshots
+- forza_text_hits.txt: keyword matches from recently modified Forza-related text/config/log files
 - pktmon_metadata.txt: Windows Packet Monitor flow metadata, if available
 
 The packet capture intentionally excluded raw packet bytes/payloads.
 The .etl remains in the local capture folder but is NOT included in this share bundle.
+Nothing is uploaded automatically.
 "@
     Set-Content -LiteralPath (Join-Path $script:RunDir "README_CAPTURE.txt") -Value $notes -Encoding UTF8
 
     $zip = "$($script:RunDir)_SHARE.zip"
     $include = @(
+        (Join-Path $script:RunDir "capture_manifest.json"),
         (Join-Path $script:RunDir "probe.log"),
         (Join-Path $script:RunDir "socket_snapshots.csv"),
         (Join-Path $script:RunDir "process_snapshots.csv"),
@@ -505,7 +522,7 @@ $title.ForeColor = Color "#202124"
 $form.Controls.Add($title)
 
 $sub = New-Object Windows.Forms.Label
-$sub.Text = "v2.2 • external session discovery • metadata only"
+$sub.Text = "v2.3 • external session discovery • metadata only"
 $sub.AutoSize = $true
 $sub.Location = New-Object Drawing.Point(31,59)
 $sub.ForeColor = Color "#5F6368"
