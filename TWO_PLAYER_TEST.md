@@ -16,9 +16,13 @@ Both testers should:
 2. Launch FH6 normally.
 3. Join the same normal freeroam session.
 4. Confirm they can physically see each other's cars in-game.
+5. If a convoy was used to get into the same session, leave the convoy first, confirm both cars are still visible, then wait about 20 seconds before starting the probe. The baseline is meant to measure ordinary freeroam, not convoy-specific traffic.
 6. Download the same current revision of this repository.
 7. Optionally run `PRE-FLIGHT CHECK.cmd`.
 8. Open `README.html` or `README.md` if anything is unclear.
+9. For the cleanest baseline, disable VPN/Tailscale/ZeroTier-style tunnels during the capture.
+10. Do not use Discord voice, Xbox party voice, Steam voice, or another shared voice call during the capture. Shared voice traffic could create a false common endpoint.
+11. Avoid large downloads or video streams while the 60-second capture is running.
 
 ## Capture procedure
 
