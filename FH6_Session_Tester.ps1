@@ -255,10 +255,18 @@ function Get-ForzaRoots {
 
     foreach ($candidate in @(
         (Join-Path $env:LOCALAPPDATA "ForzaHorizon6"),
-        (Join-Path $env:LOCALAPPDATA "Forza Horizon 6"),
-        (Join-Path $env:USERPROFILE "Documents\My Games")
+        (Join-Path $env:LOCALAPPDATA "Forza Horizon 6")
     )) {
         if (Test-Path -LiteralPath $candidate) { $roots.Add($candidate) }
+    }
+
+    # Avoid scanning the entire Documents\My Games tree. Only include
+    # child directories whose names are clearly Forza/Horizon related.
+    $myGames = Join-Path $env:USERPROFILE "Documents\My Games"
+    if (Test-Path -LiteralPath $myGames) {
+        Get-ChildItem -LiteralPath $myGames -Directory -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match '(?i)forza|horizon' } |
+            ForEach-Object { $roots.Add($_.FullName) }
     }
 
     $packages = Join-Path $env:LOCALAPPDATA "Packages"
