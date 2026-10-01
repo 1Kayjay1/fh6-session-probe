@@ -15,3 +15,7 @@ jobs:
       - name: Run PowerShell smoke and safety tests
         shell: powershell
         run: .\tests\Run-Tests.ps1
+
+      - name: Run Windows environment preflight
+        shell: powershell
+        run: .\tools\Preflight.ps1
