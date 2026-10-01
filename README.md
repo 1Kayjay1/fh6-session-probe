@@ -1,4 +1,4 @@
-# FH6 Session Probe
+# FH6 Session Probe 🙂
 
 An open-source Windows diagnostic for researching automatic session detection for a **Forza Horizon 6 proximity voice chat** project.
 
