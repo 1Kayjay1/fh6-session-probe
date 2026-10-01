@@ -10,6 +10,8 @@ BEFORE:
 [ ] If a convoy was used to join, leave convoy, confirm both cars remain visible, then wait ~20 sec
 
 ON BOTH PCS:
+[ ] If downloaded as a ZIP, Extract All first
+[ ] Do NOT run the CMD from inside the compressed ZIP
 [ ] Run "RUN FH6 SESSION TESTER.cmd"
 [ ] Approve Administrator prompt
 [ ] Click "Detect Running"
