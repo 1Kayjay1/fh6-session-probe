@@ -163,6 +163,9 @@ function Snapshot-Processes([string]$state) {
         $procPath = ""
         try {
             $procPath = $p.Path
+            if ($procPath -and $env:USERPROFILE) {
+                $procPath = $procPath.Replace($env:USERPROFILE,"%USERPROFILE%")
+            }
         } catch {
             $procPath = ""
         }
