@@ -1,0 +1,17 @@
+# Probe captures / diagnostics
+Capture_*/
+Capture_*_SHARE.zip
+*.etl
+pktmon_metadata.txt
+socket_snapshots.csv
+process_snapshots.csv
+forza_text_hits.txt
+probe.log
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
