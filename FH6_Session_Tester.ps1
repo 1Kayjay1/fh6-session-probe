@@ -346,7 +346,7 @@ function Start-Pktmon {
     $out = & pktmon @pktmonArgs 2>&1
     if ($LASTEXITCODE -eq 0) {
         $script:PktmonStarted = $true
-        Log "PKTMON STARTED metadata-only flags=0x00E file=$script:PktEtl"
+        Log "PKTMON STARTED metadata-only flags=0x00E local_etl=kept_out_of_share_zip"
     } else {
         $script:PktmonStarted = $false
         Log "PKTMON FAILED: $($out -join ' ')"
