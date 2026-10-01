@@ -612,7 +612,7 @@ $privacy.ForeColor = Color "#5F6368"
 $capPanel.Controls.Add($privacy)
 
 $tip = New-Object Windows.Forms.Label
-$tip.Text = "Best test: Freeroam A → Solo → Freeroam B → random convoy → leave convoy → online race → solo race."
+$tip.Text = "First two-PC test: stay together in one freeroam session for 45–60 seconds, then mark ONLINE_FREEROAM_A."
 $tip.AutoSize = $true
 $tip.Location = New-Object Drawing.Point(16,148)
 $tip.ForeColor = Color "#5F6368"
