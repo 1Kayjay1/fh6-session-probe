@@ -16,9 +16,9 @@ Both testers should:
 2. Launch FH6 normally.
 3. Join the same normal freeroam session.
 4. Confirm they can physically see each other's cars in-game.
-5. Download the same current revision of this repository.
-6. Optionally run `PRE-FLIGHT CHECK.cmd`.
-7. Open `README.html` or `README.md` if anything is unclear.
+6. Download the same current revision of this repository.
+7. Optionally run `PRE-FLIGHT CHECK.cmd`.
+8. Open `README.html` or `README.md` if anything is unclear.
 
 ## Capture procedure
 
