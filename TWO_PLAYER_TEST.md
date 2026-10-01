@@ -28,7 +28,7 @@ Both testers should:
 
 Do these steps on **both PCs**:
 
-1. Double-click `RUN FH6 SESSION TESTER.cmd`.
+1. If you downloaded the repository as a ZIP, extract all files first. Do not launch the CMD from inside the compressed ZIP.\n2. Double-click `RUN FH6 SESSION TESTER.cmd`.
 2. Approve the Windows Administrator prompt. This is needed for Windows Packet Monitor metadata collection.
 3. Click **Detect Running**.
 4. Confirm the UI says FH6 is detected/running.
