@@ -314,7 +314,7 @@ function Start-Pktmon {
 
     # 0x00E = component/counter info + src/dst metadata + selected NDIS metadata.
     # Critically, 0x010 (raw packet bytes) is NOT enabled.
-    $args = @(
+    $pktmonArgs = @(
         "start",
         "--capture",
         "--comp","nics",
@@ -324,7 +324,7 @@ function Start-Pktmon {
         "--file-size","96",
         "--log-mode","circular"
     )
-    $out = & pktmon @args 2>&1
+    $out = & pktmon @pktmonArgs 2>&1
     if ($LASTEXITCODE -eq 0) {
         $script:PktmonStarted = $true
         Log "PKTMON STARTED metadata-only flags=0x00E file=$script:PktEtl"
