@@ -18,7 +18,7 @@ That is the only thing this probe is trying to establish right now. Voice chat i
 
 - observes Windows networking/process metadata while FH6 is running
 - uses Windows Packet Monitor (`pktmon`) for flow metadata
-- snapshots TCP/UDP ownership by process
+- snapshots TCP/UDP ownership by process, with shareable CSV rows limited to FH6/Xbox/Gaming-related processes
 - scans recently changed FH6 text/config/log files for session-related clues
 - creates a shareable diagnostic ZIP after a test
 
@@ -71,20 +71,25 @@ This fallback exists because some Windows Store / Game Pass installations can pr
 
 Windows Packet Monitor requires elevation for this type of network-flow capture.
 
-The probe starts Packet Monitor with metadata flags only. The raw-packet-byte flag is intentionally not enabled, so the probe does not capture packet contents.
+The probe starts Packet Monitor with metadata flags only. The raw-packet-byte flag is intentionally not enabled, so the probe does not capture packet contents. Microsoft documents `0x004` as source/destination information, `0x008` as selected packet metadata, and `0x010` as raw packet data; this probe uses `0x00E`, which excludes `0x010`.
+
+Microsoft reference: https://learn.microsoft.com/windows-server/administration/windows-commands/pktmon-start
 
 ## What is in the share ZIP?
 
 Depending on what Windows exposes during the test:
 
-- `probe.log` — timestamped test timeline and interesting socket summaries
-- `socket_snapshots.csv` — TCP/UDP ownership snapshots at state marks
-- `process_snapshots.csv` — process table snapshots
-- `forza_text_hits.txt` — session-related keyword matches from recently modified FH6 text/config/log files
+- `capture_manifest.json` — probe/runtime details such as version, timestamps, Windows/PowerShell version, and whether Packet Monitor text was produced
+- `probe.log` — timestamped test timeline and FH6/Xbox/Gaming-related socket summaries
+- `socket_snapshots.csv` — FH6/Xbox/Gaming-related TCP/UDP ownership snapshots at state marks
+- `process_snapshots.csv` — FH6/Xbox/Gaming-related process snapshots; user-profile paths are redacted
+- `forza_text_hits.txt` — session-related keyword matches from recently modified Forza-related text/config/log files
 - `pktmon_metadata.txt` — Packet Monitor flow metadata
 - `README_CAPTURE.txt` — explanation of the capture files
 
 The raw `.etl` Packet Monitor file stays in the local capture folder and is **not** included in the share ZIP.
+
+`pktmon_metadata.txt` is still NIC-level network-flow metadata, so it can include network endpoints unrelated to FH6 even though it contains no packet payloads. Review the ZIP before sharing if that matters to you.
 
 Nothing is uploaded automatically.
 
