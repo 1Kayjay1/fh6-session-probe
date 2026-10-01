@@ -52,6 +52,7 @@ Assert-True "Raw-byte flag not enabled" (-not ($source -match '--flags"\s*,\s*"0
 Assert-True "Manual folder fallback present" ($source -match 'Find-ForzaExecutableInFolder' -and $source -match 'FolderBrowserDialog') "Folder fallback missing."
 Assert-True "Live-process recheck present" ($source -match 'Always re-check the live process immediately before capture') "Capture should reject stale/missing FH6 processes."
 Assert-True "Radio-mod exclusion preserved" ($source -match 'fh6-radio') "Known radio mod exclusion missing."
+Assert-True "No PID automatic-variable parameter collision" (-not ($source -match 'function\s+Get-ProcessNameSafe\s*\(\s*\[int\]\s*\$pid\s*\)')) "PowerShell's automatic $PID variable is read-only; use a different parameter name."
 
 $forbidden = @(
     "ReadProcessMemory",
