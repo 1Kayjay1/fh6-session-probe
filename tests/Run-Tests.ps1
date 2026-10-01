@@ -36,12 +36,18 @@ $preflight = Join-Path $RepoRoot "tools\Preflight.ps1"
 $launcher = Join-Path $RepoRoot "RUN FH6 SESSION TESTER.cmd"
 $preflightLauncher = Join-Path $RepoRoot "PRE-FLIGHT CHECK.cmd"
 $html = Join-Path $RepoRoot "README.html"
+$twoPlayer = Join-Path $RepoRoot "TWO_PLAYER_TEST.md"
+$checklist = Join-Path $RepoRoot "TESTER_CHECKLIST.txt"
+$limitations = Join-Path $RepoRoot "KNOWN_LIMITATIONS.md"
 
 Assert-True "Main script exists" (Test-Path -LiteralPath $main) $main
 Assert-True "Preflight script exists" (Test-Path -LiteralPath $preflight) $preflight
 Assert-True "Main launcher exists" (Test-Path -LiteralPath $launcher) $launcher
 Assert-True "Preflight launcher exists" (Test-Path -LiteralPath $preflightLauncher) $preflightLauncher
 Assert-True "Visual README exists" (Test-Path -LiteralPath $html) $html
+Assert-True "Two-player protocol exists" (Test-Path -LiteralPath $twoPlayer) $twoPlayer
+Assert-True "Tester checklist exists" (Test-Path -LiteralPath $checklist) $checklist
+Assert-True "Known limitations exists" (Test-Path -LiteralPath $limitations) $limitations
 
 Parse-Script $main
 Parse-Script $preflight
@@ -54,6 +60,9 @@ Assert-True "Live-process recheck present" ($source -match 'Always re-check the 
 Assert-True "Radio-mod exclusion preserved" ($source -match 'fh6-radio') "Known radio mod exclusion missing."
 Assert-True "No PID automatic-variable parameter collision" (-not ($source -match 'function\s+Get-ProcessNameSafe\s*\(\s*\[int\]\s*\$pid\s*\)')) "PowerShell's automatic $PID variable is read-only; use a different parameter name."
 Assert-True "No assignment to automatic args variable" (-not ($source -match '(?m)^\s*\$args\s*=')) "Avoid assigning to PowerShell automatic $args; use a normal local variable name."
+Assert-True "Capture manifest included" ($source -match 'capture_manifest\.json') "Share bundle should include a machine-readable manifest."
+Assert-True "Shared process rows are narrowed" ($source -match 'Only write FH6/Xbox/Gaming-related rows') "Process/socket share scope filter is missing."
+Assert-True "My Games scan is narrowed" ($source -match 'child directories whose names are clearly Forza/Horizon related') "Do not scan the entire Documents\\My Games tree."
 
 $forbidden = @(
     "ReadProcessMemory",
@@ -68,6 +77,18 @@ foreach ($term in $forbidden) {
 
 $cmd = Get-Content -LiteralPath $launcher -Raw
 Assert-True "Launcher points to main script" ($cmd -match 'FH6_Session_Tester\.ps1') "Launcher target mismatch."
+
+# Verify capture startup ordering inside Start-Capture.
+$startCaptureIndex = $source.IndexOf("function Start-Capture")
+$stopCaptureIndex = $source.IndexOf("function Stop-Capture")
+if ($startCaptureIndex -ge 0 -and $stopCaptureIndex -gt $startCaptureIndex) {
+    $startCaptureBody = $source.Substring($startCaptureIndex, $stopCaptureIndex - $startCaptureIndex)
+    $pktmonCallIndex = $startCaptureBody.IndexOf("Start-Pktmon")
+    $socketCallIndex = $startCaptureBody.IndexOf('Snapshot-Sockets "CAPTURE_START"')
+    Assert-True "Pktmon starts before initial snapshots" ($pktmonCallIndex -ge 0 -and $socketCallIndex -gt $pktmonCallIndex) "Start Packet Monitor before slower initial scans/snapshots."
+} else {
+    Fail "Capture startup ordering" "Could not isolate Start-Capture function."
+}
 
 # Verify that PowerShell can create the same kind of share ZIP used by the probe.
 $temp = Join-Path ([IO.Path]::GetTempPath()) ("fh6-probe-test-" + [Guid]::NewGuid().ToString("N"))
