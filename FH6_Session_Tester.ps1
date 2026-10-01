@@ -148,9 +148,9 @@ function Detect-Forza {
     $startBtn.Enabled = $true
 }
 
-function Get-ProcessNameSafe([int]$pid) {
+function Get-ProcessNameSafe([int]$processId) {
     try {
-        $p = Get-Process -Id $pid -ErrorAction Stop
+        $p = Get-Process -Id $processId -ErrorAction Stop
         return $p.ProcessName
     } catch { return "unknown" }
 }
