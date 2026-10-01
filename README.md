@@ -41,13 +41,15 @@ The tester is plain PowerShell source and can be opened in Notepad before it is 
 1. Launch FH6.
 2. Join the same normal freeroam session as the other tester.
 3. Confirm you can actually see each other's cars.
-4. Double-click **`RUN FH6 SESSION TESTER.cmd`**.
-5. Click **Detect Running**.
-6. Click **Start capture**.
-7. Stay in the same session for about **45–60 seconds**.
-8. Select **`ONLINE_FREEROAM_A`** and click **Mark state**.
-9. Click **Stop + build bundle**.
-10. Send back only the generated **`Capture_..._SHARE.zip`**.
+4. If you downloaded the repository as a ZIP, **extract all files first**. Do not run the CMD from inside the compressed ZIP.
+5. Double-click **`RUN FH6 SESSION TESTER.cmd`**.
+6. Click **Detect Running**.
+7. Click **Start capture**.
+8. Stay in the same session for about **45–60 seconds**.
+9. Select **`ONLINE_FREEROAM_A`** and click **Mark state**.
+10. Wait another 5–10 seconds.
+11. Click **Stop + build bundle**.
+12. Send back only the generated **`Capture_..._SHARE.zip`**.
 
 For the first comparison, staying in one unchanged freeroam session is more useful than jumping through multiple game modes.
 
