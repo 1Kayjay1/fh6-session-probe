@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FH6 Session Probe - Visual Guide</title>
+<style>
+:root{--bg:#0f1115;--card:#171a21;--muted:#a8b0bd;--text:#f5f7fa;--accent:#7dc7ff;--good:#65d48f;--warn:#ffcb6b;--line:#2a2f39}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Segoe UI,system-ui,-apple-system,sans-serif;line-height:1.55}
+main{max-width:980px;margin:0 auto;padding:42px 22px 72px}
+.hero{padding:34px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#171a21,#11141a)}
+h1{font-size:clamp(34px,6vw,64px);line-height:1.02;margin:0 0 12px}.sub{font-size:20px;color:var(--muted);max-width:760px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.chip{border:1px solid var(--line);padding:8px 12px;border-radius:999px;background:#11151b}.good{color:var(--good)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+h2{margin-top:42px;font-size:28px} h3{margin:0 0 8px}.muted{color:var(--muted)}
+.step{display:flex;gap:14px;align-items:flex-start}.n{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#23303d;color:var(--accent);font-weight:700;flex:0 0 auto}
+code{background:#0d1015;border:1px solid var(--line);padding:2px 6px;border-radius:7px}
+.callout{border-left:4px solid var(--accent);padding:15px 18px;background:#131821;border-radius:10px;margin:18px 0}.warn{border-left-color:var(--warn)}
+svg{width:100%;height:auto;background:#101319;border:1px solid var(--line);border-radius:18px;padding:12px}
+a{color:var(--accent)} footer{margin-top:46px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+  <h1>FH6 Session Probe</h1>
+  <p class="sub">A small, open-source Windows diagnostic for researching automatic session detection for a Forza Horizon 6 proximity voice-chat project.</p>
+  <div class="chips">
+    <span class="chip good">No injection</span>
+    <span class="chip good">No game-memory reading</span>
+    <span class="chip good">No gameplay modification</span>
+    <span class="chip good">No packet payload capture</span>
+    <span class="chip">Plain PowerShell</span>
+  </div>
+</section>
+
+<h2>What is being tested?</h2>
+<div class="card">
+  <p>The current question is simple: if two PC players are already in the same normal FH6 freeroam session, can both PCs independently expose the same stable session or network fingerprint?</p>
+  <p class="muted">If yes, a future proximity voice client could use that fingerprint only for discovery, while voice itself runs externally.</p>
+</div>
+
+<h2>How the tester works</h2>
+<svg viewBox="0 0 940 280" role="img" aria-label="Architecture diagram">
+  <defs>
+    <style>
+      .b{fill:#171a21;stroke:#394250;stroke-width:2}.t{fill:#f5f7fa;font:600 18px Segoe UI}.s{fill:#a8b0bd;font:14px Segoe UI}.a{stroke:#7dc7ff;stroke-width:3;fill:none;marker-end:url(#m)}
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#7dc7ff"/></marker>
+  </defs>
+  <rect class="b" x="30" y="78" width="220" height="120" rx="16"/>
+  <text class="t" x="140" y="120" text-anchor="middle">Forza Horizon 6</text>
+  <text class="s" x="140" y="149" text-anchor="middle">Game runs normally</text>
+  <text class="s" x="140" y="171" text-anchor="middle">No code injected</text>
+  <path class="a" d="M250 138 H350"/>
+  <rect class="b" x="350" y="58" width="240" height="160" rx="16"/>
+  <text class="t" x="470" y="105" text-anchor="middle">Session Probe</text>
+  <text class="s" x="470" y="136" text-anchor="middle">Windows process + socket metadata</text>
+  <text class="s" x="470" y="158" text-anchor="middle">Pktmon flow metadata only</text>
+  <text class="s" x="470" y="180" text-anchor="middle">Recent FH6 text/config clues</text>
+  <path class="a" d="M590 138 H690"/>
+  <rect class="b" x="690" y="78" width="220" height="120" rx="16"/>
+  <text class="t" x="800" y="120" text-anchor="middle">Share ZIP</text>
+  <text class="s" x="800" y="149" text-anchor="middle">Diagnostic metadata</text>
+  <text class="s" x="800" y="171" text-anchor="middle">Raw ETL stays local</text>
+</svg>
+
+<h2>Recommended 1-minute test</h2>
+<div class="grid">
+  <div class="card step"><div class="n">1</div><div><h3>Launch FH6</h3><div class="muted">Join the same normal freeroam session as the other tester and make sure you can actually see each other's cars.</div></div></div>
+  <div class="card step"><div class="n">2</div><div><h3>Run the tester</h3><div class="muted">Double-click <code>RUN FH6 SESSION TESTER.cmd</code>. Administrator permission is requested because Windows Packet Monitor requires elevation.</div></div></div>
+  <div class="card step"><div class="n">3</div><div><h3>Detect the game</h3><div class="muted">Click <strong>Detect Running</strong>. This is the preferred path because it identifies the live FH6 process directly.</div></div></div>
+  <div class="card step"><div class="n">4</div><div><h3>Capture</h3><div class="muted">Start capture, remain in the same session for roughly 45–60 seconds, then mark <code>ONLINE_FREEROAM_A</code>.</div></div></div>
+  <div class="card step"><div class="n">5</div><div><h3>Build the bundle</h3><div class="muted">Click <strong>Stop + build bundle</strong>. The tester creates a <code>Capture_..._SHARE.zip</code>.</div></div></div>
+  <div class="card step"><div class="n">6</div><div><h3>Send only the share ZIP</h3><div class="muted">The raw ETL stays on your PC and is not included in the share bundle.</div></div></div>
+</div>
+
+<h2>If auto-detect does not work</h2>
+<div class="callout">
+  <strong>Use Choose Folder as the fallback.</strong><br>
+  Select the actual FH6 install folder. The tester searches that folder for the game executable and uses it to locate FH6-related files. You still need FH6 running before capture starts.
+</div>
+<p class="muted">This fallback exists because Windows Store / Game Pass installs can sometimes hide or protect the executable path from ordinary process inspection. Auto-detect is still recommended whenever it works.</p>
+
+<h2>Why Administrator permission?</h2>
+<div class="card">
+  <p>Windows Packet Monitor (<code>pktmon</code>) needs elevation for this network-flow capture. The probe uses metadata flags only. It does not enable the raw-packet-byte flag and does not inspect packet contents.</p>
+</div>
+
+<h2>Before testing</h2>
+<div class="grid">
+  <div class="card"><h3>Preflight</h3><p class="muted">Run <code>PRE-FLIGHT CHECK.cmd</code> to check PowerShell, WinForms, networking cmdlets, Packet Monitor, FH6 process state, and capture-folder write access.</p></div>
+  <div class="card"><h3>Repository tests</h3><p class="muted">Run <code>RUN SELF TESTS.cmd</code> to syntax-check the PowerShell files, verify capture safety invariants, and smoke-test ZIP creation.</p></div>
+</div>
+
+<div class="callout warn">
+  <strong>Important:</strong> passing the offline tests proves the scripts parse and the local smoke/safety checks pass. It does not prove that the FH6 session fingerprint is shared across two real players. That is exactly what the multiplayer test is for.
+</div>
+
+<h2>What gets shared?</h2>
+<div class="grid">
+  <div class="card"><h3>Included</h3><p class="muted">Probe timeline, socket snapshots, process snapshots, FH6 text/config keyword hits, and Packet Monitor flow metadata when available.</p></div>
+  <div class="card"><h3>Not included</h3><p class="muted">Raw ETL capture, packet payloads, game memory, game modifications, or automatic uploads.</p></div>
+</div>
+
+<footer>
+  Project: <a href="https://github.com/1Kayjay1/fh6-session-probe">github.com/1Kayjay1/fh6-session-probe</a><br>
+  This guide is self-contained and uses no external scripts, fonts, analytics, or tracking.
+</footer>
+</main>
+</body>
+</html>
