@@ -1,0 +1,17 @@
+name: Windows tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run PowerShell smoke and safety tests
+        shell: powershell
+        run: .\tests\Run-Tests.ps1
